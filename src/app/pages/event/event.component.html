@@ -1,0 +1,124 @@
+<section class="schedule-section spad pt-4">
+    <div class="container" *ngIf="eventData$| async as EventData">
+       
+        <div class="row">
+            <div class="col-8">
+              <div class="row">
+                <div class="col-12">
+                  <img class="card-img-top" [src]="EventData.imageUrl" alt="Card image cap">
+                </div>
+              </div>
+              <div class="row pt-2">
+                <div class="col-lg-6">
+                    <div class="section-title">
+                        <h2>{{EventData.eventName}}</h2>
+                        <p>{{EventData.organizerName}}</p>
+                    </div>
+                </div>
+                <div class="col-6 text-end">
+                  <button class="btn btn-primary" (click)="openModel()" data-bs-toggle="modal" data-bs-target="#myModal">Book Now</button>
+                </div>
+                <div class="col-6">
+                  Start Time: {{EventData.startDate |date: 'dd-MM-yy'}}
+                </div>
+                <div class="col-6 text-end">
+                  End Time: {{EventData.endDate}}
+                </div>
+                <div class="col-12 text-end">
+                  <p>{{EventData.location}} </p>
+                </div>
+                <div class="col-12 pt-1">
+                  <p>
+                    Evenet Description
+                  </p>
+                </div>
+            </div>
+            
+            </div>
+            <div class="col-4">
+              <h3>{{EventData.organizerName}}</h3>
+              <div class="row">
+                @for (item of events$|async; track $index) {
+                    <div class="col-12 pt-1">
+                        <div class="card" >
+                          <img class="card-img-top" style="height: 100px !important;" [src]="item.imageUrl" alt="Card image cap">
+                          <div class="card-body"> 
+                            <a  [routerLink]="['/event/', item.eventId]" class="btn btn-primary">Book</a>
+                          </div>
+                        </div>
+                      </div>
+                }
+              </div>
+            </div>
+        </div> 
+    </div>
+</section>
+
+
+<div class="modal" id="myModal" #model>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Book Ticket</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <table>
+                <thead>
+                  <tr>
+                    <td>
+                      <input type="text" [(ngModel)]="members.Name" class="form-control" placeholder="Name">
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="members.Age" class="form-control" placeholder="Age">
+                    </td>
+                    <td>
+                      <select class="form-select" [(ngModel)]="members.IdentityCard">
+                        <option value="">Select Indentity Proof</option>
+                        <option value="Aadhar Card">Aadhar Card</option>
+                        <option value="Pan Card">Pan Card</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="members.CardNo" class="form-control" placeholder="Car No">
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="members.ContactNo" class="form-control" placeholder="Mobile No">
+                    </td>
+                    <td>
+                     <button class="btn btn-sm btn-primary" (click)="addMember()">Add</button>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of bookingObj.EventBookingMembers; track $index) {
+                    <tr>
+                      <td>{{item.Name}}</td>
+                      <td>{{item.Age}}</td>
+                      <td>{{item.IdentityCard}}</td>
+                      <td>{{item.CardNo}}</td>
+                      <td>{{item.ContactNo}}</td>
+                    </tr>
+                  }
+                </tbody>
+                
+              </table>
+            </div>
+          </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="onBooking()" >Book Ticket</button>
+      </div>
+
+    </div>
+  </div>
+</div>
